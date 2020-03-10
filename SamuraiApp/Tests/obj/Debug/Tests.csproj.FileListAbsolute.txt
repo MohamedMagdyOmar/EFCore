@@ -1,0 +1,13 @@
+D:\Repo\EFCore\SamuraiApp\Tests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+D:\Repo\EFCore\SamuraiApp\Tests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+D:\Repo\EFCore\SamuraiApp\Tests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+D:\Repo\EFCore\SamuraiApp\Tests\bin\Debug\Tests.dll
+D:\Repo\EFCore\SamuraiApp\Tests\bin\Debug\Tests.pdb
+D:\Repo\EFCore\SamuraiApp\Tests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+D:\Repo\EFCore\SamuraiApp\Tests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+D:\Repo\EFCore\SamuraiApp\Tests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+D:\Repo\EFCore\SamuraiApp\Tests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+D:\Repo\EFCore\SamuraiApp\Tests\obj\Debug\Tests.csprojAssemblyReference.cache
+D:\Repo\EFCore\SamuraiApp\Tests\obj\Debug\Tests.csproj.CopyComplete
+D:\Repo\EFCore\SamuraiApp\Tests\obj\Debug\Tests.dll
+D:\Repo\EFCore\SamuraiApp\Tests\obj\Debug\Tests.pdb

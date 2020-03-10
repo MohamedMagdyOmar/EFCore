@@ -1,0 +1,5 @@
+D:\Repo\EFCore\SamuraiApp\SamuraiApp.Data\bin\Debug\SamuraiApp.Data.dll
+D:\Repo\EFCore\SamuraiApp\SamuraiApp.Data\bin\Debug\SamuraiApp.Data.pdb
+D:\Repo\EFCore\SamuraiApp\SamuraiApp.Data\obj\Debug\SamuraiApp.Data.csprojAssemblyReference.cache
+D:\Repo\EFCore\SamuraiApp\SamuraiApp.Data\obj\Debug\SamuraiApp.Data.dll
+D:\Repo\EFCore\SamuraiApp\SamuraiApp.Data\obj\Debug\SamuraiApp.Data.pdb

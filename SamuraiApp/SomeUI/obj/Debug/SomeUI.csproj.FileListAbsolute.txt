@@ -1,0 +1,6 @@
+D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\SomeUI.exe.config
+D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\SomeUI.exe
+D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\SomeUI.pdb
+D:\Repo\EFCore\SamuraiApp\SomeUI\obj\Debug\SomeUI.csprojAssemblyReference.cache
+D:\Repo\EFCore\SamuraiApp\SomeUI\obj\Debug\SomeUI.exe
+D:\Repo\EFCore\SamuraiApp\SomeUI\obj\Debug\SomeUI.pdb
