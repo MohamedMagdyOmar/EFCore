@@ -1,0 +1,4 @@
+﻿Module 4: Interacting with your EF Core Data Model.
+- as i write and run the code for interacting with the data model, i want to be able to see the sql commands that is created and executed by EF Core.
+- to do that, we can use the "logging" that i built into .Net core.
+- the logging package should be added to "context class" or the "data" project, and so install "microsoft.Extensions.Logging.Console"
