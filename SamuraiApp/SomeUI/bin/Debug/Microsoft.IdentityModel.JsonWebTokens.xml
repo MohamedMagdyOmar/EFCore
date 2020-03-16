@@ -282,6 +282,13 @@
             See: http://tools.ietf.org/html/rfc7519 and http://www.rfc-editor.org/info/rfc7515.
             </summary>
         </member>
+        <member name="F:Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.Base64UrlEncodedUnsignedJWSHeader">
+            <summary>
+            Gets the Base64Url encoded string representation of the following JWT header: 
+            { <see cref="F:Microsoft.IdentityModel.JsonWebTokens.JwtHeaderParameterNames.Alg"/>, <see cref="F:Microsoft.IdentityModel.Tokens.SecurityAlgorithms.None"/> }.
+            </summary>
+            <return>The Base64Url encoded string representation of the unsigned JWT header.</return>
+        </member>
         <member name="P:Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.TokenType">
             <summary>
             Gets the type of the <see cref="T:Microsoft.IdentityModel.JsonWebTokens.JsonWebToken"/>.
@@ -311,12 +318,47 @@
             </summary>
             <returns>'true', indicating this instance can validate a <see cref="T:Microsoft.IdentityModel.JsonWebTokens.JsonWebToken"/>.</returns>
         </member>
+        <member name="M:Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.CreateToken(System.String)">
+            <summary>
+            Creates an unsigned JWS (Json Web Signature).
+            </summary>
+            <param name="payload">A string containing JSON which represents the JWT token payload.</param>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="payload"/> is null.</exception>
+            <returns>A JWS in Compact Serialization Format.</returns>
+        </member>
+        <member name="M:Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.CreateToken(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Creates an unsigned JWS (Json Web Signature).
+            </summary>
+            <param name="payload">A string containing JSON which represents the JWT token payload.</param>
+            <param name="additionalHeaderClaims">Defines the dictionary containing any custom header claims that need to be added to the JWT token header.</param>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="payload"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="additionalHeaderClaims"/> is null.</exception>
+            <returns>A JWS in Compact Serialization Format.</returns>
+        </member>
         <member name="M:Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.CreateToken(System.String,Microsoft.IdentityModel.Tokens.SigningCredentials)">
             <summary>
             Creates a JWS (Json Web Signature).
             </summary>
             <param name="payload">A string containing JSON which represents the JWT token payload.</param>
             <param name="signingCredentials">Defines the security key and algorithm that will be used to sign the JWS.</param>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="payload"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="signingCredentials"/> is null.</exception>
+            <returns>A JWS in Compact Serialization Format.</returns>
+        </member>
+        <member name="M:Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.CreateToken(System.String,Microsoft.IdentityModel.Tokens.SigningCredentials,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Creates a JWS (Json Web Signature).
+            </summary>
+            <param name="payload">A string containing JSON which represents the JWT token payload.</param>
+            <param name="signingCredentials">Defines the security key and algorithm that will be used to sign the JWS.</param>
+            <param name="additionalHeaderClaims">Defines the dictionary containing any custom header claims that need to be added to the JWT token header.</param>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="payload"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="signingCredentials"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="additionalHeaderClaims"/> is null.</exception>
+            <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenException">if <see cref="F:Microsoft.IdentityModel.JsonWebTokens.JwtHeaderParameterNames.Alg"/>, <see cref="F:Microsoft.IdentityModel.JsonWebTokens.JwtHeaderParameterNames.Kid"/>
+            <see cref="F:Microsoft.IdentityModel.JsonWebTokens.JwtHeaderParameterNames.X5t"/>, <see cref="F:Microsoft.IdentityModel.JsonWebTokens.JwtHeaderParameterNames.Enc"/>, and/or <see cref="F:Microsoft.IdentityModel.JsonWebTokens.JwtHeaderParameterNames.Zip"/>
+            are present inside of <paramref name="additionalHeaderClaims"/>.</exception>
             <returns>A JWS in Compact Serialization Format.</returns>
         </member>
         <member name="M:Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.CreateToken(Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor)">
@@ -326,6 +368,14 @@
             <param name="tokenDescriptor">A <see cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor"/> that contains details of contents of the token.</param>
             <returns>A JWS in Compact Serialization Format.</returns>
         </member>
+        <member name="M:Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.CreateToken(System.String,Microsoft.IdentityModel.Tokens.EncryptingCredentials)">
+            <summary>
+            Creates a JWE (Json Web Encryption).
+            </summary>
+            <param name="payload">A string containing JSON which represents the JWT token payload.</param>
+            <param name="encryptingCredentials">Defines the security key and algorithm that will be used to encrypt the JWT.</param>
+            <returns>A JWE in compact serialization format.</returns>
+        </member>
         <member name="M:Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.CreateToken(System.String,Microsoft.IdentityModel.Tokens.SigningCredentials,Microsoft.IdentityModel.Tokens.EncryptingCredentials)">
             <summary>
             Creates a JWE (Json Web Encryption).
@@ -333,6 +383,35 @@
             <param name="payload">A string containing JSON which represents the JWT token payload.</param>
             <param name="signingCredentials">Defines the security key and algorithm that will be used to sign the JWT.</param>
             <param name="encryptingCredentials">Defines the security key and algorithm that will be used to encrypt the JWT.</param>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="payload"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="signingCredentials"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="encryptingCredentials"/> is null.</exception>
+            <returns>A JWE in compact serialization format.</returns>
+        </member>
+        <member name="M:Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.CreateToken(System.String,Microsoft.IdentityModel.Tokens.SigningCredentials,Microsoft.IdentityModel.Tokens.EncryptingCredentials,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Creates a JWE (Json Web Encryption).
+            </summary>
+            <param name="payload">A string containing JSON which represents the JWT token payload.</param>
+            <param name="signingCredentials">Defines the security key and algorithm that will be used to sign the JWT.</param>
+            <param name="encryptingCredentials">Defines the security key and algorithm that will be used to encrypt the JWT.</param>
+            <param name="additionalHeaderClaims">Defines the dictionary containing any custom header claims that need to be added to the outer JWT token header.</param>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="payload"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="signingCredentials"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="encryptingCredentials"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="additionalHeaderClaims"/> is null.</exception>
+            <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenException">if <see cref="F:Microsoft.IdentityModel.JsonWebTokens.JwtHeaderParameterNames.Alg"/>, <see cref="F:Microsoft.IdentityModel.JsonWebTokens.JwtHeaderParameterNames.Kid"/>
+            <see cref="F:Microsoft.IdentityModel.JsonWebTokens.JwtHeaderParameterNames.X5t"/>, <see cref="F:Microsoft.IdentityModel.JsonWebTokens.JwtHeaderParameterNames.Enc"/>, and/or <see cref="F:Microsoft.IdentityModel.JsonWebTokens.JwtHeaderParameterNames.Zip"/>
+            are present inside of <paramref name="additionalHeaderClaims"/>.</exception>
+            <returns>A JWE in compact serialization format.</returns>
+        </member>
+        <member name="M:Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.CreateToken(System.String,Microsoft.IdentityModel.Tokens.EncryptingCredentials,System.String)">
+            <summary>
+            Creates a JWE (Json Web Encryption).
+            </summary>
+            <param name="payload">A string containing JSON which represents the JWT token payload.</param>
+            <param name="encryptingCredentials">Defines the security key and algorithm that will be used to encrypt the JWT.</param>
+            <param name="compressionAlgorithm">Defines the compression algorithm that will be used to compress the JWT token payload.</param>
             <returns>A JWE in compact serialization format.</returns>
         </member>
         <member name="M:Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.CreateToken(System.String,Microsoft.IdentityModel.Tokens.SigningCredentials,Microsoft.IdentityModel.Tokens.EncryptingCredentials,System.String)">
@@ -343,6 +422,29 @@
             <param name="signingCredentials">Defines the security key and algorithm that will be used to sign the JWT.</param>
             <param name="encryptingCredentials">Defines the security key and algorithm that will be used to encrypt the JWT.</param>
             <param name="compressionAlgorithm">Defines the compression algorithm that will be used to compress the JWT token payload.</param>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="payload"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="signingCredentials"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="encryptingCredentials"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="compressionAlgorithm"/> is null.</exception>
+            <returns>A JWE in compact serialization format.</returns>
+        </member>
+        <member name="M:Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.CreateToken(System.String,Microsoft.IdentityModel.Tokens.SigningCredentials,Microsoft.IdentityModel.Tokens.EncryptingCredentials,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Creates a JWE (Json Web Encryption).
+            </summary>
+            <param name="payload">A string containing JSON which represents the JWT token payload.</param>
+            <param name="signingCredentials">Defines the security key and algorithm that will be used to sign the JWT.</param>
+            <param name="encryptingCredentials">Defines the security key and algorithm that will be used to encrypt the JWT.</param>
+            <param name="compressionAlgorithm">Defines the compression algorithm that will be used to compress the JWT token payload.</param>       
+            <param name="additionalHeaderClaims">Defines the dictionary containing any custom header claims that need to be added to the outer JWT token header.</param>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="payload"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="signingCredentials"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="encryptingCredentials"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="compressionAlgorithm"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="additionalHeaderClaims"/> is null.</exception>
+            <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenException">if <see cref="F:Microsoft.IdentityModel.JsonWebTokens.JwtHeaderParameterNames.Alg"/>, <see cref="F:Microsoft.IdentityModel.JsonWebTokens.JwtHeaderParameterNames.Kid"/>
+            <see cref="F:Microsoft.IdentityModel.JsonWebTokens.JwtHeaderParameterNames.X5t"/>, <see cref="F:Microsoft.IdentityModel.JsonWebTokens.JwtHeaderParameterNames.Enc"/>, and/or <see cref="F:Microsoft.IdentityModel.JsonWebTokens.JwtHeaderParameterNames.Zip"/>
+            are present inside of <paramref name="additionalHeaderClaims"/>.</exception>
             <returns>A JWE in compact serialization format.</returns>
         </member>
         <member name="M:Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.CompressToken(System.String,System.String)">
@@ -350,9 +452,9 @@
             Compress a JWT token string.
             </summary>
             <param name="token"></param>
-            <param name="algorithm"></param>
-            <exception cref="T:System.ArgumentNullException">if 'token' is null.</exception>
-            <exception cref="T:System.ArgumentNullException">if 'algorithm' is null.</exception>
+            <param name="compressionAlgorithm"></param>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="token"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="compressionAlgorithm"/> is null.</exception>
             <exception cref="T:System.NotSupportedException">if the compression algorithm is not supported.</exception>
             <returns>Compressed JWT token bytes.</returns>
         </member>
@@ -371,11 +473,11 @@
             <param name="jwtToken">the JWE that contains the cypher text.</param>
             <param name="validationParameters">contains crypto material.</param>
             <returns>the decoded / cleartext contents of the JWE.</returns>
-            <exception cref="T:System.ArgumentNullException">if 'jwtToken' is null.</exception>
-            <exception cref="T:System.ArgumentNullException">if 'validationParameters' is null.</exception>
-            <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenException">if 'jwtToken.Enc' is null or empty.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="jwtToken"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="validationParameters"/>  is null.</exception>
+            <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenException">if '<paramref name="jwtToken"/> .Enc' is null or empty.</exception>
             <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenDecompressionFailedException">if decompression failed.</exception>
-            <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenEncryptionKeyNotFoundException">if 'jwtToken.Kid' is not null AND decryption fails.</exception>
+            <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenEncryptionKeyNotFoundException">if '<paramref name="jwtToken"/> .Kid' is not null AND decryption fails.</exception>
             <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenDecryptionFailedException">if the JWE was not able to be decrypted.</exception>
         </member>
         <member name="M:Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.EncryptToken(System.String,Microsoft.IdentityModel.Tokens.EncryptingCredentials)">
@@ -392,6 +494,22 @@
             <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenEncryptionFailedException">if encryption fails using the <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Enc"/> (algorithm), <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Key"/> pair.</exception>
             <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenEncryptionFailedException">if not using one of the supported content encryption key (CEK) algorithms: 128, 384 or 512 AesCbcHmac (this applies in the case of key wrap only, not direct encryption).</exception>
         </member>
+        <member name="M:Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.EncryptToken(System.String,Microsoft.IdentityModel.Tokens.EncryptingCredentials,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Encrypts a JWS.
+            </summary>
+            <param name="innerJwt">A 'JSON Web Token' (JWT) in JWS Compact Serialization Format.</param>
+            <param name="encryptingCredentials">Defines the security key and algorithm that will be used to encrypt the <paramref name="innerJwt"/>.</param>
+            <param name="additionalHeaderClaims">Defines the dictionary containing any custom header claims that need to be added to the outer JWT token header.</param>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="innerJwt"/> is null or empty.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="encryptingCredentials"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="additionalHeaderClaims"/> is null.</exception>
+            <exception cref="T:System.ArgumentException">if both <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.CryptoProviderFactory"/> and <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Key"/>.<see cref="T:Microsoft.IdentityModel.Tokens.CryptoProviderFactory"/> are null.</exception>
+            <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenEncryptionFailedException">if the CryptoProviderFactory being used does not support the <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Enc"/> (algorithm), <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Key"/> pair.</exception>
+            <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenEncryptionFailedException">if unable to create a token encryption provider for the <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Enc"/> (algorithm), <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Key"/> pair.</exception>
+            <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenEncryptionFailedException">if encryption fails using the <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Enc"/> (algorithm), <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Key"/> pair.</exception>
+            <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenEncryptionFailedException">if not using one of the supported content encryption key (CEK) algorithms: 128, 384 or 512 AesCbcHmac (this applies in the case of key wrap only, not direct encryption).</exception>
+        </member>
         <member name="M:Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.EncryptToken(System.String,Microsoft.IdentityModel.Tokens.EncryptingCredentials,System.String)">
             <summary>
             Encrypts a JWS.
@@ -401,7 +519,26 @@
             <param name="algorithm">Defines the compression algorithm that will be used to compress the 'innerJwt'.</param>
             <exception cref="T:System.ArgumentNullException">if <paramref name="innerJwt"/> is null or empty.</exception>
             <exception cref="T:System.ArgumentNullException">if <paramref name="encryptingCredentials"/> is null.</exception>
-            <exception cref="T:System.ArgumentNullException">if 'algorithm' is null or empty.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="algorithm"/> is null or empty.</exception>
+            <exception cref="T:System.ArgumentException">if both <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.CryptoProviderFactory"/> and <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Key"/>.<see cref="T:Microsoft.IdentityModel.Tokens.CryptoProviderFactory"/> are null.</exception>
+            <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenEncryptionFailedException">if the CryptoProviderFactory being used does not support the <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Enc"/> (algorithm), <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Key"/> pair.</exception>
+            <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenEncryptionFailedException">if unable to create a token encryption provider for the <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Enc"/> (algorithm), <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Key"/> pair.</exception>
+            <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenCompressionFailedException">if compression using <paramref name="algorithm"/> fails.</exception>
+            <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenEncryptionFailedException">if encryption fails using the <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Enc"/> (algorithm), <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Key"/> pair.</exception>
+            <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenEncryptionFailedException">if not using one of the supported content encryption key (CEK) algorithms: 128, 384 or 512 AesCbcHmac (this applies in the case of key wrap only, not direct encryption).</exception>
+        </member>
+        <member name="M:Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.EncryptToken(System.String,Microsoft.IdentityModel.Tokens.EncryptingCredentials,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Encrypts a JWS.
+            </summary>
+            <param name="innerJwt">A 'JSON Web Token' (JWT) in JWS Compact Serialization Format.</param>
+            <param name="encryptingCredentials">Defines the security key and algorithm that will be used to encrypt the <paramref name="innerJwt"/>.</param>
+            <param name="algorithm">Defines the compression algorithm that will be used to compress the 'innerJwt'.</param>
+            <param name="additionalHeaderClaims">Defines the dictionary containing any custom header claims that need to be added to the outer JWT token header.</param>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="innerJwt"/> is null or empty.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="encryptingCredentials"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="algorithm"/> is null or empty.</exception>
+            <exception cref="T:System.ArgumentNullException">if <paramref name="additionalHeaderClaims"/> is null or empty.</exception>
             <exception cref="T:System.ArgumentException">if both <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.CryptoProviderFactory"/> and <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Key"/>.<see cref="T:Microsoft.IdentityModel.Tokens.CryptoProviderFactory"/> are null.</exception>
             <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenEncryptionFailedException">if the CryptoProviderFactory being used does not support the <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Enc"/> (algorithm), <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Key"/> pair.</exception>
             <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenEncryptionFailedException">if unable to create a token encryption provider for the <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Enc"/> (algorithm), <see cref="P:Microsoft.IdentityModel.Tokens.EncryptingCredentials.Key"/> pair.</exception>
@@ -603,7 +740,6 @@
         </member>
         <member name="F:Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Actort">
             <summary>
-            http://tools.ietf.org/html/rfc7519#section-4
             </summary>
         </member>
         <member name="F:Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Acr">
@@ -633,12 +769,12 @@
         </member>
         <member name="F:Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Birthdate">
             <summary>
-            http://tools.ietf.org/html/rfc7519#section-4
+            https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
             </summary>
         </member>
         <member name="F:Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.CHash">
             <summary>
-            http://tools.ietf.org/html/rfc7519#section-4
+            https://openid.net/specs/openid-connect-core-1_0.html#HybridIDToken
             </summary>
         </member>
         <member name="F:Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.AtHash">
@@ -648,7 +784,7 @@
         </member>
         <member name="F:Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Email">
             <summary>
-            http://tools.ietf.org/html/rfc7519#section-4
+            https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
             </summary>
         </member>
         <member name="F:Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Exp">
@@ -658,17 +794,17 @@
         </member>
         <member name="F:Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Gender">
             <summary>
-            http://tools.ietf.org/html/rfc7519#section-4
+            https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
             </summary>
         </member>
         <member name="F:Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.FamilyName">
             <summary>
-            http://tools.ietf.org/html/rfc7519#section-4
+            https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
             </summary>
         </member>
         <member name="F:Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.GivenName">
             <summary>
-            http://tools.ietf.org/html/rfc7519#section-4
+            https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
             </summary>
         </member>
         <member name="F:Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Iat">
@@ -688,12 +824,11 @@
         </member>
         <member name="F:Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.NameId">
             <summary>
-            http://tools.ietf.org/html/rfc7519#section-4
             </summary>
         </member>
         <member name="F:Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Nonce">
             <summary>
-            http://tools.ietf.org/html/rfc7519#section-4
+            https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest
             </summary>
         </member>
         <member name="F:Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Nbf">
@@ -703,7 +838,6 @@
         </member>
         <member name="F:Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Prn">
             <summary>
-            http://tools.ietf.org/html/rfc7519#section-4
             </summary>
         </member>
         <member name="F:Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Sid">
@@ -718,17 +852,15 @@
         </member>
         <member name="F:Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Typ">
             <summary>
-            http://tools.ietf.org/html/rfc7519#section-4
+            https://tools.ietf.org/html/rfc7519#section-5
             </summary>
         </member>
         <member name="F:Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.UniqueName">
             <summary>
-            http://tools.ietf.org/html/rfc7519#section-4
             </summary>
         </member>
         <member name="F:Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Website">
             <summary>
-            http://tools.ietf.org/html/rfc7519#section-4
             </summary>
         </member>
         <member name="T:Microsoft.IdentityModel.JsonWebTokens.JwtTokenUtilities">
@@ -797,6 +929,17 @@
             </remarks>
             <exception cref="T:System.FormatException">If the value of the claim cannot be parsed into a long.</exception>
             <returns>The DateTime representation of a claim.</returns>
+        </member>
+        <member name="M:Microsoft.IdentityModel.JsonWebTokens.JwtTokenUtilities.ValidateTokenType(System.String,Microsoft.IdentityModel.Tokens.TokenValidationParameters)">
+            <summary>
+            Validates the 'typ' claim of the JWT token header.
+            </summary>
+            <param name="type">The value of the 'typ' header claim."/></param>
+            <param name="validationParameters"><see cref="T:Microsoft.IdentityModel.Tokens.TokenValidationParameters"/> required for validation.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="validationParameters"/> is null or whitespace.</exception>
+            <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenInvalidTypeException">If <paramref name="type"/> is null or whitespace and <see cref="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.ValidTypes"/> is not null.</exception>
+            <exception cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenInvalidTypeException">If <paramref name="type"/> failed to match <see cref="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.ValidTypes"/>.</exception>
+            <remarks>An EXACT match is required. <see cref="F:System.StringComparison.Ordinal"/> (case sensitive) is used for comparing <paramref name="type"/> against <see cref="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.ValidTypes"/>.</remarks>
         </member>
         <member name="T:Microsoft.IdentityModel.JsonWebTokens.LogMessages">
             <summary>

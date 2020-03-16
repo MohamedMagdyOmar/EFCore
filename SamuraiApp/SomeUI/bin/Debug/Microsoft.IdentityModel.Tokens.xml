@@ -1256,7 +1256,7 @@
         </member>
         <member name="P:Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException.Expires">
             <summary>
-            Gets or sets the Expires value that created the validation exception.
+            Gets or sets the Expires value that created the validation exception. This value is always in UTC.
             </summary>
         </member>
         <member name="M:Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException.#ctor">
@@ -1337,12 +1337,12 @@
         </member>
         <member name="P:Microsoft.IdentityModel.Tokens.SecurityTokenInvalidLifetimeException.NotBefore">
             <summary>
-            Gets or sets the NotBefore value that created the validation exception.
+            Gets or sets the NotBefore value that created the validation exception. This value is always in UTC.
             </summary>
         </member>
         <member name="P:Microsoft.IdentityModel.Tokens.SecurityTokenInvalidLifetimeException.Expires">
             <summary>
-            Gets or sets the Expires value that created the validation exception.
+            Gets or sets the Expires value that created the validation exception. This value is always in UTC.
             </summary>
         </member>
         <member name="M:Microsoft.IdentityModel.Tokens.SecurityTokenInvalidLifetimeException.#ctor">
@@ -1411,6 +1411,34 @@
             Initializes a new instance of  <see cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenInvalidSigningKeyException"/>
             </summary>
         </member>
+        <member name="T:Microsoft.IdentityModel.Tokens.SecurityTokenInvalidTypeException">
+            <summary>
+            This exception is thrown when the token type ('typ' header claim) of a JWT token is invalid.
+            </summary>
+        </member>
+        <member name="P:Microsoft.IdentityModel.Tokens.SecurityTokenInvalidTypeException.InvalidType">
+            <summary>
+            Gets or sets the invalid type that created the validation exception.
+            </summary>
+        </member>
+        <member name="M:Microsoft.IdentityModel.Tokens.SecurityTokenInvalidTypeException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenInvalidTypeException"/> class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.IdentityModel.Tokens.SecurityTokenInvalidTypeException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenInvalidTypeException"/> class.
+            </summary>
+            <param name="message">Additional information to be included in the exception and displayed to user.</param>
+        </member>
+        <member name="M:Microsoft.IdentityModel.Tokens.SecurityTokenInvalidTypeException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.IdentityModel.Tokens.SecurityTokenInvalidTypeException"/> class.
+            </summary>
+            <param name="message">Additional information to be included in the exception and displayed to user.</param>
+            <param name="innerException">A <see cref="T:System.Exception"/> that represents the root cause of the exception.</param>
+        </member>
         <member name="T:Microsoft.IdentityModel.Tokens.SecurityTokenKeyWrapException">
             <summary>
             Represents a key wrap exception when encryption failed.
@@ -1466,7 +1494,7 @@
         </member>
         <member name="P:Microsoft.IdentityModel.Tokens.SecurityTokenNotYetValidException.NotBefore">
             <summary>
-            Gets or sets the NotBefore value that created the validation exception.
+            Gets or sets the NotBefore value that created the validation exception. This value is always in UTC.
             </summary>
         </member>
         <member name="M:Microsoft.IdentityModel.Tokens.SecurityTokenNotYetValidException.#ctor">
@@ -2312,7 +2340,7 @@
         </member>
         <member name="P:Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor.Expires">
             <summary>
-            Gets or sets the value of the 'expiration' claim.
+            Gets or sets the value of the 'expiration' claim. This value should be in UTC.
             </summary>
         </member>
         <member name="P:Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor.Issuer">
@@ -2322,17 +2350,29 @@
         </member>
         <member name="P:Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor.IssuedAt">
             <summary>
-            Gets or sets the time the security token was issued.
+            Gets or sets the time the security token was issued. This value should be in UTC.
             </summary>
         </member>
         <member name="P:Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor.NotBefore">
             <summary>
-            Gets or sets the notbefore time for the security token.
+            Gets or sets the notbefore time for the security token. This value should be in UTC.
             </summary>
         </member>
         <member name="P:Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor.Claims">
             <summary>
             Gets or sets the <see cref="T:System.Collections.Generic.Dictionary`2"/> which represents the claims that will be used when creating a security token.
+            If both <cref see="Claims"/> and <see cref="P:Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor.Subject"/> are set, the claim values in Subject will be combined with the values
+            in Claims. The values found in Claims take precedence over those found in Subject, so any duplicate
+            values will be overridden.
+            </summary>
+        </member>
+        <member name="P:Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor.AdditionalHeaderClaims">
+            <summary>
+            Gets or sets the <see cref="T:System.Collections.Generic.Dictionary`2"/> which contains any custom header claims that need to be added to the JWT token header.
+            The 'alg', 'kid', 'x5t', 'enc', and 'zip' claims are added by default based on the <see cref="P:Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor.SigningCredentials"/>,
+            <see cref="P:Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor.EncryptingCredentials"/>, and/or <see cref="P:Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor.CompressionAlgorithm"/> provided and SHOULD NOT be included in this dictionary as this
+            will result in an exception being thrown. 
+            <remarks> These claims are only added to the outer header (in case of a JWE).</remarks>
             </summary>
         </member>
         <member name="P:Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor.SigningCredentials">
@@ -2343,6 +2383,9 @@
         <member name="P:Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor.Subject">
             <summary>
             Gets or sets the <see cref="T:System.Security.Claims.ClaimsIdentity"/>.
+            If both <cref see="Claims"/> and <see cref="P:Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor.Subject"/> are set, the claim values in Subject will be combined with the values
+            in Claims. The values found in Claims take precedence over those found in Subject, so any duplicate
+            values will be overridden.
             </summary>
         </member>
         <member name="T:Microsoft.IdentityModel.Tokens.SecurityTokenHandler">
@@ -2928,14 +2971,6 @@
             If <see cref="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.ValidateAudience"/> is false, this delegate will not be called.
             </remarks>
         </member>
-        <member name="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.TokenReader">
-            <summary>
-            Gets or sets a delegate that will be used to read the token.
-            </summary>
-            <remarks>
-            If set, this delegate will be called to read the token instead of normal processing.
-            </remarks>
-        </member>
         <member name="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.AuthenticationType">
             <summary>
             Gets or sets the AuthenticationType when creating a <see cref="T:System.Security.Claims.ClaimsIdentity"/>.
@@ -2968,19 +3003,6 @@
             <summary>
             Users can override the default <see cref="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.CryptoProviderFactory"/> with this property. This factory will be used for creating signature providers.
             </summary>
-        </member>
-        <member name="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.TokenDecryptionKey">
-            <summary>
-            Gets or sets the <see cref="T:Microsoft.IdentityModel.Tokens.SecurityKey"/> that is to be used for decryption.
-            </summary>
-        </member>
-        <member name="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.TokenDecryptionKeyResolver">
-            <summary>
-            Gets or sets a delegate that will be called to retreive a <see cref="T:Microsoft.IdentityModel.Tokens.SecurityKey"/> used for decryption.
-            </summary>
-            <remarks>
-            This <see cref="T:Microsoft.IdentityModel.Tokens.SecurityKey"/> will be used to decrypt the token. This can be helpful when the <see cref="T:Microsoft.IdentityModel.Tokens.SecurityToken"/> does not contain a key identifier.
-            </remarks>
         </member>
         <member name="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.IssuerSigningKeyValidator">
             <summary>
@@ -3024,15 +3046,6 @@
             <remarks>
             If set, this delegate will be called to validate the lifetime of the token, instead of normal processing.
             If <see cref="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.ValidateLifetime"/> is false, this delegate will not be called.
-            </remarks>
-        </member>
-        <member name="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.TokenReplayValidator">
-            <summary>
-            Gets or sets a delegate that will be used to validate the token replay of the token
-            </summary>
-            <remarks>
-            If set, this delegate will be called to validate the token replay of the token, instead of normal processing.
-            If <see cref="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.ValidateTokenReplay"/> is false, this delegate will not be called.
             </remarks>
         </member>
         <member name="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.NameClaimType">
@@ -3098,16 +3111,46 @@
             If set, this delegate will be called to signature of the token, instead of normal processing.
             </remarks>
         </member>
+        <member name="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.TokenDecryptionKey">
+            <summary>
+            Gets or sets the <see cref="T:Microsoft.IdentityModel.Tokens.SecurityKey"/> that is to be used for decryption.
+            </summary>
+        </member>
+        <member name="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.TokenDecryptionKeyResolver">
+            <summary>
+            Gets or sets a delegate that will be called to retreive a <see cref="T:Microsoft.IdentityModel.Tokens.SecurityKey"/> used for decryption.
+            </summary>
+            <remarks>
+            This <see cref="T:Microsoft.IdentityModel.Tokens.SecurityKey"/> will be used to decrypt the token. This can be helpful when the <see cref="T:Microsoft.IdentityModel.Tokens.SecurityToken"/> does not contain a key identifier.
+            </remarks>
+        </member>
         <member name="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.TokenDecryptionKeys">
             <summary>
             Gets or sets the <see cref="T:System.Collections.Generic.IEnumerable`1"/> that is to be used for decrypting inbound tokens.
             </summary>
+        </member>
+        <member name="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.TokenReader">
+            <summary>
+            Gets or sets a delegate that will be used to read the token.
+            </summary>
+            <remarks>
+            If set, this delegate will be called to read the token instead of normal processing.
+            </remarks>
         </member>
         <member name="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.TokenReplayCache">
             <summary>
             Gets or set the <see cref="T:Microsoft.IdentityModel.Tokens.ITokenReplayCache"/> that store tokens that can be checked to help detect token replay.
             </summary>
             <remarks>If set, then tokens must have an expiration time or the runtime will fault.</remarks>
+        </member>
+        <member name="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.TokenReplayValidator">
+            <summary>
+            Gets or sets a delegate that will be used to validate the token replay of the token
+            </summary>
+            <remarks>
+            If set, this delegate will be called to validate the token replay of the token, instead of normal processing.
+            If <see cref="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.ValidateTokenReplay"/> is false, this delegate will not be called.
+            </remarks>
         </member>
         <member name="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.ValidateActor">
             <summary>
@@ -3168,6 +3211,13 @@
         <member name="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.ValidIssuers">
             <summary>
             Gets or sets the <see cref="T:System.Collections.Generic.IEnumerable`1"/> that contains valid issuers that will be used to check against the token's issuer.
+            </summary>
+        </member>
+        <member name="P:Microsoft.IdentityModel.Tokens.TokenValidationParameters.ValidTypes">
+            <summary>
+            Gets or sets the <see cref="T:System.Collections.Generic.IEnumerable`1"/> that contains valid types that will be used to check against the JWT header's 'typ' claim.
+            If this property is not set, the 'typ' header claim will not be validated and all types will be accepted.
+            In the case of a JWE, this property will ONLY apply to the inner token header.
             </summary>
         </member>
         <member name="T:Microsoft.IdentityModel.Tokens.UniqueId">

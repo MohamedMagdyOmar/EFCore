@@ -1,4 +1,5 @@
 D:\Repo\EFCore\SamuraiApp\SamuraiApp.Domain\bin\Debug\SamuraiApp.Domain.dll
 D:\Repo\EFCore\SamuraiApp\SamuraiApp.Domain\bin\Debug\SamuraiApp.Domain.pdb
+D:\Repo\EFCore\SamuraiApp\SamuraiApp.Domain\obj\Debug\SamuraiApp.Domain.csprojAssemblyReference.cache
 D:\Repo\EFCore\SamuraiApp\SamuraiApp.Domain\obj\Debug\SamuraiApp.Domain.dll
 D:\Repo\EFCore\SamuraiApp\SamuraiApp.Domain\obj\Debug\SamuraiApp.Domain.pdb
