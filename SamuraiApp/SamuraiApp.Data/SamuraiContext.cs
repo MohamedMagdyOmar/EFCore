@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 using SamuraiApp.Domain;
 using System;
 using System.Collections.Generic;
@@ -10,6 +12,14 @@ namespace SamuraiApp.Data
 {
     public class SamuraiContext:DbContext
     {
+       /* public static readonly LoggerFactory MyConsoleLoggerFactory = 
+            new LoggerFactory(new[] { 
+            new ConsoleLoggerProvider((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information,true
+                )});*/
+
+        public static readonly ILoggerFactory MyConsoleLoggerFactory
+            = LoggerFactory.Create(builder => { builder.AddConsole(); });
+
         public DbSet<Samurai> Samurais { get; set; }
         public DbSet<Quote> Quotes { get; set; }
         public DbSet<Battle> Battles { get; set; } 
@@ -19,7 +29,8 @@ namespace SamuraiApp.Data
             // this is your connection string
             // here you database will be called SamuraiAppData
             // the first time the EFCore instantiates the samurai context at runtime, it will trigger "OnConfiguring" Method
-            optionsBuilder.UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = SamuraiAppData; Trusted_Connection = True;");
+            optionsBuilder.UseLoggerFactory(MyConsoleLoggerFactory)
+                .UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = SamuraiAppData; Trusted_Connection = True;");
         }
 
         // "modelBuilder" object that EF Core pass to this function, you are telling that "SamuraiBattle" have key composed of
