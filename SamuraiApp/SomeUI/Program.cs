@@ -19,10 +19,13 @@ namespace SomeUI
         private static void InsertSamurai()
         {
             var samurai = new Samurai { Name = "Julie" };
+            var smallSamurai = new Samurai { Name = "mohamed" };
+            var battle = new Battle{ Name = "Hettin", StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(1) };
+
             using (var context = new SamuraiContext())
             {
                 // below add command makes the "context" track the samurai object
-                context.Samurais.Add(samurai);
+                context.AddRange(samurai, smallSamurai, battle);
 
                 // internal workflow is as follows:
                     //1- Examine each tracked object
