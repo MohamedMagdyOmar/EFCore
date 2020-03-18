@@ -13,6 +13,7 @@ namespace SomeUI
         static void Main(string[] args)
         {
             InsertSamurai();
+            QueringSimplaeData();
             Console.ReadLine();
         }
 
@@ -34,6 +35,21 @@ namespace SomeUI
                     //4- execute each sql command in the database
                     //5- capture any returned data
                 context.SaveChanges();
+            }
+        }
+
+        private static void QueringSimplaeData()
+        {
+            using (var context = new SamuraiContext())
+            {
+                // will retrieve all samurais and insert them in the memory
+                var allSamurais = context.Samurais.ToList();
+
+                //this is another solution, but it will keep the connection to the database opened untill we retrieve all the data
+                foreach(var samurai in context.Samurais)
+                {
+                    Console.WriteLine(samurai.Name);
+                }
             }
         }
     }
