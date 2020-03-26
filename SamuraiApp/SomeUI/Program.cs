@@ -20,8 +20,33 @@ namespace SomeUI
         {
             //InsertSamurai();
             //QueringSimplaeData();
-            MoreQueries();
+            //MoreQueries();
+            //RetrieveAndUpdateSamurai();
+            //RetrieveAndUpdateMultipleSamurais();
+            MultipleDatabaseOperations();
             Console.ReadLine();
+        }
+
+        private static void MultipleDatabaseOperations()
+        {
+            var samurai = _context.Samurais.FirstOrDefault();
+            samurai.Name += " Mohamed";
+            _context.Samurais.Add(new Samurai { Name = "Omar" });
+            _context.SaveChanges();
+        }
+
+        private static void RetrieveAndUpdateMultipleSamurais()
+        {
+            var samurais = _context.Samurais.ToList();
+            samurais.ForEach(s => s.Name += " Mohamed");
+            _context.SaveChanges();
+        }
+
+        private static void RetrieveAndUpdateSamurai()
+        {
+            var samurai = _context.Samurais.FirstOrDefault();
+            samurai.Name = "Mohamed " + samurai.Name;
+            _context.SaveChanges();
         }
 
         private static void MoreQueries()
