@@ -23,8 +23,28 @@ namespace SomeUI
             //MoreQueries();
             //RetrieveAndUpdateSamurai();
             //RetrieveAndUpdateMultipleSamurais();
-            MultipleDatabaseOperations();
+            //MultipleDatabaseOperations();
+            QueryAndUpdateBattle_Disconnected();
             Console.ReadLine();
+        }
+
+        private static void InsertBattle()
+        {
+            _context.Battles.Add(new Battle { Name = "Battle Of Hettin", StartDate = new DateTime(1560, 05, 01), EndDate = new DateTime(1560, 06, 15) });
+            _context.SaveChanges();
+        }
+        private static void QueryAndUpdateBattle_Disconnected()
+        {
+            // here we are emulating a "disconnected scenario" where we are requesting a batlle in one context "below one" and modify it,
+            // then use a brand new context "newContextInstance" to push the changes to the database
+            var battle = _context.Battles.FirstOrDefault();
+            battle.EndDate = new DateTime(1560, 06, 30);
+
+            using (var newContextInstance = new SamuraiContext())
+            {
+                newContextInstance.Battles.Update(battle);
+                newContextInstance.SaveChanges();
+            }
         }
 
         private static void MultipleDatabaseOperations()
