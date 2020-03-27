@@ -39,6 +39,9 @@ D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\System.Numerics.Vectors.dll
 D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
 D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\System.Threading.Tasks.Extensions.dll
 D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\Microsoft.EntityFrameworkCore.SqlServer.dll
+D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\Microsoft.Extensions.Logging.Console.dll
+D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\Microsoft.Extensions.Logging.Configuration.dll
+D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\Microsoft.Extensions.Options.ConfigurationExtensions.dll
 D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\SamuraiApp.Data.pdb
 D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\SamuraiApp.Data.dll.config
 D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\SamuraiApp.Domain.pdb
@@ -78,6 +81,9 @@ D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\System.Numerics.Vectors.xml
 D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\System.Threading.Tasks.Extensions.xml
 D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\Microsoft.EntityFrameworkCore.SqlServer.xml
+D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\Microsoft.Extensions.Logging.Console.xml
+D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\Microsoft.Extensions.Logging.Configuration.xml
+D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\Microsoft.Extensions.Options.ConfigurationExtensions.xml
 D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\de\Microsoft.Data.SqlClient.resources.dll
 D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\es\Microsoft.Data.SqlClient.resources.dll
 D:\Repo\EFCore\SamuraiApp\SomeUI\bin\Debug\fr\Microsoft.Data.SqlClient.resources.dll

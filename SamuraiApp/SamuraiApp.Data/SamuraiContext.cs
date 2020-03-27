@@ -30,6 +30,7 @@ namespace SamuraiApp.Data
             // here you database will be called SamuraiAppData
             // the first time the EFCore instantiates the samurai context at runtime, it will trigger "OnConfiguring" Method
             optionsBuilder.UseLoggerFactory(MyConsoleLoggerFactory)
+                .EnableSensitiveDataLogging(true)
                 .UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = SamuraiAppData; Trusted_Connection = True;");
         }
 
