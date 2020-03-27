@@ -28,6 +28,45 @@ namespace SomeUI
             Console.ReadLine();
         }
 
+
+        private static void DeleteWhileTracked()
+        {
+            var samurai = _context.Samurais.FirstOrDefault(s => s.Name == "Mohamed");
+            _context.Samurais.Remove(samurai);
+            _context.SaveChanges();
+        }
+
+        private static void DeleteWhileNotTracked()
+        {
+            // disconnected scenario
+            var samurai = _context.Samurais.FirstOrDefault(s => s.Name.Contains("Mohamed"));
+            using (var newContext = new SamuraiContext())
+            {
+                newContext.Samurais.Remove(samurai);
+                newContext.SaveChanges();
+            }
+        }
+
+        private static void DeleteMany()
+        {
+            var samurais = _context.Samurais.Where(s => s.Name.Contains("Mohamed"));
+            _context.Samurais.RemoveRange(samurais);
+            _context.SaveChanges();
+        }
+
+        private static void DeleteUsingId(int samuraiId)
+        {
+            // first you query the database using "Find" to retrieve the object so you can pass it into remove method
+            // it is not good because there are 2 trips to the database
+            var samurai = _context.Samurais.Find(samuraiId);
+            _context.Remove(samurai);
+            _context.SaveChanges();
+
+            // there is alternate method is to call a stored procedure and pass a parameter
+            // _context.Database.ExecuteSqlCommand("exec DeleteById {0}", samuraiId)
+            // or you can use also DbSet.FromSql()
+        }
+
         private static void InsertBattle()
         {
             _context.Battles.Add(new Battle { Name = "Battle Of Hettin", StartDate = new DateTime(1560, 05, 01), EndDate = new DateTime(1560, 06, 15) });
