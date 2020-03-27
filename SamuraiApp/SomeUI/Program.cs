@@ -29,8 +29,30 @@ namespace SomeUI
             //InsertNewPkFkGraphMultipleChildren();
             //AddChildToExistingObjectWhileTracked();
             //AddChildToExistingObjectWhileNotTracked();
-            AddChildToExistingObjectWhileNotTracked(1);
+            //AddChildToExistingObjectWhileNotTracked(1);
+            EagerLoadSamuraiWithQuotes();
             Console.ReadLine();
+        }
+
+        private static void EagerLoadSamuraiWithQuotes()
+        {
+            // if you check the logs, you will find that the first brings the samurais, and then left join with quotes
+            // while the second will get samurais only without any join with quotes.
+            // using "Include" is very important because using only one call to DB we can get back rich object graphs
+            var samuraiWithQuotes = _context.Samurais.Include(s => s.Quotes).ToList();
+            var samurai = _context.Samurais.ToList();
+
+            // more examples
+            var samuraiWithQuotesExample1 = _context.Samurais.Where(s => s.Name.Contains("Mohamed")).Include(s => s.Quotes).ToList();
+            var samuraiWithQuotesExample2 = _context.Samurais.Where(s => s.Name.Contains("Mohamed")).Include(s => s.Quotes).FirstOrDefault();
+
+            // include children and grand children
+            var samuraiWithQuotesExample3 = _context.Samurais.Include(s => s.Quotes).ThenInclude(q => q.Count);
+
+            // include different children
+            var samuraiWithQuotesExample4 = _context.Samurais.Include(s => s.Quotes).Include(q => q.SecretIdentity);
+
+            // Include always loads the entire set of related objects, and it did not allow to filter you which related data is returned
         }
 
         private static void AddChildToExistingObjectWhileNotTracked(int samuraiId)
