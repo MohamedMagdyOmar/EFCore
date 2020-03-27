@@ -24,11 +24,86 @@ namespace SomeUI
             //RetrieveAndUpdateSamurai();
             //RetrieveAndUpdateMultipleSamurais();
             //MultipleDatabaseOperations();
-            QueryAndUpdateBattle_Disconnected();
+            //QueryAndUpdateBattle_Disconnected();
+            //InsertNewPkFkGraph();
+            //InsertNewPkFkGraphMultipleChildren();
+            //AddChildToExistingObjectWhileTracked();
+            //AddChildToExistingObjectWhileNotTracked();
+            AddChildToExistingObjectWhileNotTracked(1);
             Console.ReadLine();
         }
 
+        private static void AddChildToExistingObjectWhileNotTracked(int samuraiId)
+        {
+            // no need to retrieve the samurai object, we just need its id to be used as foreign key when we are adding a quote for this samurai
+            var quote = new Quote
+            {
+                Text = "Now Palestine is freed",
+                SamuraiId = samuraiId
+            };
+            using (var newContext = new SamuraiContext())
+            {
+                newContext.Quotes.Add(quote);
+                newContext.SaveChanges();
+            }
+        }
 
+        private static void AddChildToExistingObjectWhileNotTracked()
+        {
+            // here we have disconnected scenario, where initially we have context that track the samurai
+            // then we have newContext, that is not tracking the samurai retreived object and it did not know anything about it.
+            // so in this case you have to set the foreign key in quote by yourself (note in "AddChildToExistingObjectWhileTracked" you did not set the foregin key because the object is already tracked)
+            var samurai = _context.Samurais.First();
+            samurai.Quotes.Add(new Quote { Text = "I am Happy" });
+            using (var newContext = new SamuraiContext())
+            {
+                // below line is WRONG, because newContext did not know anything about samurai object, it is not tracking it
+                // and when you try to execute below line DB will throw an exception because there is already a samurai with this id
+                // to solve this problem, look at the above method
+                // newContext.Samurais.Add(samurai);
+            }
+        }
+
+        private static void AddChildToExistingObjectWhileTracked()
+        {
+            // here we are retreiving a samurai from database, and then adding new quote to it.
+            // here in this case the context is still tracking the samurai, so it knows that i added a new quotes for the tracked samurai.
+            // also in quote, we did not set the foreign key value of the samurai, because the context is already tracking it
+            var samurai = _context.Samurais.First();
+            samurai.Quotes.Add(new Quote { Text = "I am Happy" });
+            _context.SaveChanges();
+        }
+
+        private static void InsertNewPkFkGraphMultipleChildren()
+        {
+            var samurai = new Samurai
+            {
+                Name = "Mohamed Omar",
+                Quotes = new List<Quote> { 
+                    new Quote { Text = "I've Come To Save You" },
+                    new Quote { Text = "Palestine will be freed one day" }
+                }
+            };
+
+            _context.Samurais.Add(samurai);
+            _context.SaveChanges();
+        }
+
+        private static void InsertNewPkFkGraph()
+        {
+            // note that the relation between Samurai and Quotes are 1 to many
+            // when you check the logs, you will find that there are 2 inserts, the first one is the insert to the "Samurai" table, and get the Id
+            // then another Insert into the "Quotes" table and it will use previous retreieved id as the foreign key
+            // so the insert is done in 2 steps not a batch insert
+            var samurai = new Samurai
+            {
+                Name = "Mohamed Omar",
+                Quotes = new List<Quote> { new Quote { Text = "I've Come To Save You" } }
+            };
+
+            _context.Samurais.Add(samurai);
+            _context.SaveChanges();
+        }
         private static void DeleteWhileTracked()
         {
             var samurai = _context.Samurais.FirstOrDefault(s => s.Name == "Mohamed");
