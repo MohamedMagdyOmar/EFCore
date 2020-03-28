@@ -11,6 +11,10 @@ namespace SomeUI
 {
     class Program
     {
+        // General Note
+        // "Connected" -> DbContext is a ware of all changes made to the objects that it is tracking
+        // "Disconnected" -> DbContext has no clue about history of objects before they are attached
+
         // rather than initiating a new context for every one of my methods, we will class wide context that i instantiate in startup
         private static SamuraiContext _context = new SamuraiContext();
 
@@ -32,13 +36,45 @@ namespace SomeUI
             //AddChildToExistingObjectWhileNotTracked(1);
             //EagerLoadSamuraiWithQuotes();
             //ProjectSomeProperties();
-            FilteringWithRelatedData();
+            //FilteringWithRelatedData();
+            //ModifyingRelatedDataWhenTracked();
+            ModifyingRelatedDataWhenNotTracked();
             Console.ReadLine();
+        }
+
+        private static void ModifyingRelatedDataWhenNotTracked()
+        {
+            var samurai = _context.Samurais.Include(s => s.Quotes).FirstOrDefault();
+            var quote = samurai.Quotes[0];
+            quote.Text += "Mohamed Omar Will Free Quods Inshaa Allah";
+
+            using (var newContext = new SamuraiContext())
+            {
+                // if you check the logs, you will find that EF will update both "Quote" table and "Samurai" Table
+                //newContext.Quotes.Update(quote);
+
+                newContext.Entry(quote).State = EntityState.Modified;
+                newContext.SaveChanges();
+            }
+        }
+
+        private static void ModifyingRelatedDataWhenTracked()
+        {
+            var samurai1 = _context.Samurais.Include(s => s.Quotes).FirstOrDefault();
+            samurai1.Quotes[0].Text += " SalahEldin";
+            _context.SaveChanges();
+
+            var samurai2 = _context.Samurais.Where(x => x.Quotes.Count != 0).Include(s => s.Quotes).FirstOrDefault();
+            samurai2.Quotes.Remove(samurai2.Quotes[0]);
+            _context.SaveChanges();
         }
 
         private static void FilteringWithRelatedData()
         {
-            var samurais = _context.Samurais.Where(s => s.Quotes.Any(q => q.Text.Contains("Palestine"))).ToList();
+            // this is so weird, if you comment samurais2, below line will give you different result
+            var samurais1 = _context.Samurais.Where(s => s.Quotes.Any(q => q.Text.Contains("Palestine"))).ToList();
+
+            var samurais2 = _context.Samurais.Where(s => s.Quotes.Any(q => q.Text.Contains("Palestine"))).Include(q => q.Quotes).ToList();
         }
 
         private static void ProjectSomeProperties()
