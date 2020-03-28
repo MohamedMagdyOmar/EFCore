@@ -31,8 +31,14 @@ namespace SomeUI
             //AddChildToExistingObjectWhileNotTracked();
             //AddChildToExistingObjectWhileNotTracked(1);
             //EagerLoadSamuraiWithQuotes();
-            ProjectSomeProperties();
+            //ProjectSomeProperties();
+            FilteringWithRelatedData();
             Console.ReadLine();
+        }
+
+        private static void FilteringWithRelatedData()
+        {
+            var samurais = _context.Samurais.Where(s => s.Quotes.Any(q => q.Text.Contains("Palestine"))).ToList();
         }
 
         private static void ProjectSomeProperties()
