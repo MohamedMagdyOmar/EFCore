@@ -30,8 +30,27 @@ namespace SomeUI
             //AddChildToExistingObjectWhileTracked();
             //AddChildToExistingObjectWhileNotTracked();
             //AddChildToExistingObjectWhileNotTracked(1);
-            EagerLoadSamuraiWithQuotes();
+            //EagerLoadSamuraiWithQuotes();
+            ProjectSomeProperties();
             Console.ReadLine();
+        }
+
+        private static void ProjectSomeProperties()
+        {
+            // this will return anonymous type
+            var someProperties1 = _context.Samurais.Select(s => new { s.Id, s.Name }).ToList();
+
+            var someProperties2 = _context.Samurais.Select(s => new { s.Id, s.Name, s.Quotes }).ToList();
+
+            var someProperties3 = _context.Samurais.Select(s => new { s.Id, s.Name, s.Quotes.Count }).ToList();
+
+            var someProperties4 = _context.Samurais.Select(s => new { s.Id, s.Name, HappyQuotes = s.Quotes.Where(q => q.Text.Contains("Palestine")) }).ToList();
+
+            // below line not work, bug in EFCore
+            var someProperties5 = _context.Samurais.Select(s => new { Samurai = s, Quotes = s.Quotes.Where(q => q.Text.Contains("Palestine")).ToList()}).ToList();
+
+            var someProperties6 = _context.Samurais.ToList();
+            var palestine = _context.Quotes.Where(q => q.Text.Contains("Palestine")).ToList();
         }
 
         private static void EagerLoadSamuraiWithQuotes()
