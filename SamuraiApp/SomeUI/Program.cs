@@ -11,6 +11,10 @@ namespace SomeUI
 {
     class Program
     {
+        // General Note
+        // "Connected" -> DbContext is a ware of all changes made to the objects that it is tracking
+        // "Disconnected" -> DbContext has no clue about history of objects before they are attached
+
         // rather than initiating a new context for every one of my methods, we will class wide context that i instantiate in startup
         private static SamuraiContext _context = new SamuraiContext();
 
@@ -24,11 +28,165 @@ namespace SomeUI
             //RetrieveAndUpdateSamurai();
             //RetrieveAndUpdateMultipleSamurais();
             //MultipleDatabaseOperations();
-            QueryAndUpdateBattle_Disconnected();
+            //QueryAndUpdateBattle_Disconnected();
+            //InsertNewPkFkGraph();
+            //InsertNewPkFkGraphMultipleChildren();
+            //AddChildToExistingObjectWhileTracked();
+            //AddChildToExistingObjectWhileNotTracked();
+            //AddChildToExistingObjectWhileNotTracked(1);
+            //EagerLoadSamuraiWithQuotes();
+            //ProjectSomeProperties();
+            //FilteringWithRelatedData();
+            //ModifyingRelatedDataWhenTracked();
+            ModifyingRelatedDataWhenNotTracked();
             Console.ReadLine();
         }
 
+        private static void ModifyingRelatedDataWhenNotTracked()
+        {
+            var samurai = _context.Samurais.Include(s => s.Quotes).FirstOrDefault();
+            var quote = samurai.Quotes[0];
+            quote.Text += "Mohamed Omar Will Free Quods Inshaa Allah";
 
+            using (var newContext = new SamuraiContext())
+            {
+                // if you check the logs, you will find that EF will update both "Quote" table and "Samurai" Table
+                //newContext.Quotes.Update(quote);
+
+                newContext.Entry(quote).State = EntityState.Modified;
+                newContext.SaveChanges();
+            }
+        }
+
+        private static void ModifyingRelatedDataWhenTracked()
+        {
+            var samurai1 = _context.Samurais.Include(s => s.Quotes).FirstOrDefault();
+            samurai1.Quotes[0].Text += " SalahEldin";
+            _context.SaveChanges();
+
+            var samurai2 = _context.Samurais.Where(x => x.Quotes.Count != 0).Include(s => s.Quotes).FirstOrDefault();
+            samurai2.Quotes.Remove(samurai2.Quotes[0]);
+            _context.SaveChanges();
+        }
+
+        private static void FilteringWithRelatedData()
+        {
+            // this is so weird, if you comment samurais2, below line will give you different result
+            var samurais1 = _context.Samurais.Where(s => s.Quotes.Any(q => q.Text.Contains("Palestine"))).ToList();
+
+            var samurais2 = _context.Samurais.Where(s => s.Quotes.Any(q => q.Text.Contains("Palestine"))).Include(q => q.Quotes).ToList();
+        }
+
+        private static void ProjectSomeProperties()
+        {
+            // this will return anonymous type
+            var someProperties1 = _context.Samurais.Select(s => new { s.Id, s.Name }).ToList();
+
+            var someProperties2 = _context.Samurais.Select(s => new { s.Id, s.Name, s.Quotes }).ToList();
+
+            var someProperties3 = _context.Samurais.Select(s => new { s.Id, s.Name, s.Quotes.Count }).ToList();
+
+            var someProperties4 = _context.Samurais.Select(s => new { s.Id, s.Name, HappyQuotes = s.Quotes.Where(q => q.Text.Contains("Palestine")) }).ToList();
+
+            // below line not work, bug in EFCore
+            var someProperties5 = _context.Samurais.Select(s => new { Samurai = s, Quotes = s.Quotes.Where(q => q.Text.Contains("Palestine")).ToList()}).ToList();
+
+            var someProperties6 = _context.Samurais.ToList();
+            var palestine = _context.Quotes.Where(q => q.Text.Contains("Palestine")).ToList();
+        }
+
+        private static void EagerLoadSamuraiWithQuotes()
+        {
+            // if you check the logs, you will find that the first brings the samurais, and then left join with quotes
+            // while the second will get samurais only without any join with quotes.
+            // using "Include" is very important because using only one call to DB we can get back rich object graphs
+            var samuraiWithQuotes = _context.Samurais.Include(s => s.Quotes).ToList();
+            var samurai = _context.Samurais.ToList();
+
+            // more examples
+            var samuraiWithQuotesExample1 = _context.Samurais.Where(s => s.Name.Contains("Mohamed")).Include(s => s.Quotes).ToList();
+            var samuraiWithQuotesExample2 = _context.Samurais.Where(s => s.Name.Contains("Mohamed")).Include(s => s.Quotes).FirstOrDefault();
+
+            // include children and grand children
+            var samuraiWithQuotesExample3 = _context.Samurais.Include(s => s.Quotes).ThenInclude(q => q.Count);
+
+            // include different children
+            var samuraiWithQuotesExample4 = _context.Samurais.Include(s => s.Quotes).Include(q => q.SecretIdentity);
+
+            // Include always loads the entire set of related objects, and it did not allow to filter you which related data is returned
+        }
+
+        private static void AddChildToExistingObjectWhileNotTracked(int samuraiId)
+        {
+            // no need to retrieve the samurai object, we just need its id to be used as foreign key when we are adding a quote for this samurai
+            var quote = new Quote
+            {
+                Text = "Now Palestine is freed",
+                SamuraiId = samuraiId
+            };
+            using (var newContext = new SamuraiContext())
+            {
+                newContext.Quotes.Add(quote);
+                newContext.SaveChanges();
+            }
+        }
+
+        private static void AddChildToExistingObjectWhileNotTracked()
+        {
+            // here we have disconnected scenario, where initially we have context that track the samurai
+            // then we have newContext, that is not tracking the samurai retreived object and it did not know anything about it.
+            // so in this case you have to set the foreign key in quote by yourself (note in "AddChildToExistingObjectWhileTracked" you did not set the foregin key because the object is already tracked)
+            var samurai = _context.Samurais.First();
+            samurai.Quotes.Add(new Quote { Text = "I am Happy" });
+            using (var newContext = new SamuraiContext())
+            {
+                // below line is WRONG, because newContext did not know anything about samurai object, it is not tracking it
+                // and when you try to execute below line DB will throw an exception because there is already a samurai with this id
+                // to solve this problem, look at the above method
+                // newContext.Samurais.Add(samurai);
+            }
+        }
+
+        private static void AddChildToExistingObjectWhileTracked()
+        {
+            // here we are retreiving a samurai from database, and then adding new quote to it.
+            // here in this case the context is still tracking the samurai, so it knows that i added a new quotes for the tracked samurai.
+            // also in quote, we did not set the foreign key value of the samurai, because the context is already tracking it
+            var samurai = _context.Samurais.First();
+            samurai.Quotes.Add(new Quote { Text = "I am Happy" });
+            _context.SaveChanges();
+        }
+
+        private static void InsertNewPkFkGraphMultipleChildren()
+        {
+            var samurai = new Samurai
+            {
+                Name = "Mohamed Omar",
+                Quotes = new List<Quote> { 
+                    new Quote { Text = "I've Come To Save You" },
+                    new Quote { Text = "Palestine will be freed one day" }
+                }
+            };
+
+            _context.Samurais.Add(samurai);
+            _context.SaveChanges();
+        }
+
+        private static void InsertNewPkFkGraph()
+        {
+            // note that the relation between Samurai and Quotes are 1 to many
+            // when you check the logs, you will find that there are 2 inserts, the first one is the insert to the "Samurai" table, and get the Id
+            // then another Insert into the "Quotes" table and it will use previous retreieved id as the foreign key
+            // so the insert is done in 2 steps not a batch insert
+            var samurai = new Samurai
+            {
+                Name = "Mohamed Omar",
+                Quotes = new List<Quote> { new Quote { Text = "I've Come To Save You" } }
+            };
+
+            _context.Samurais.Add(samurai);
+            _context.SaveChanges();
+        }
         private static void DeleteWhileTracked()
         {
             var samurai = _context.Samurais.FirstOrDefault(s => s.Name == "Mohamed");
