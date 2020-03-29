@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
+using Microsoft.IdentityModel.Protocols;
 using SamuraiApp.Domain;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,11 +14,12 @@ namespace SamuraiApp.Data
 {
     public class SamuraiContext:DbContext
     {
-       /* public static readonly LoggerFactory MyConsoleLoggerFactory = 
-            new LoggerFactory(new[] { 
-            new ConsoleLoggerProvider((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information,true
-                )});*/
+        /* public static readonly LoggerFactory MyConsoleLoggerFactory = 
+             new LoggerFactory(new[] { 
+             new ConsoleLoggerProvider((category, level) => category == DbLoggerCategory.Database.Command.Name && level == LogLevel.Information,true
+                 )});*/
 
+        public IConfigurationRoot Configuration { get; }
         public static readonly ILoggerFactory MyConsoleLoggerFactory
             = LoggerFactory.Create(builder => { builder.AddConsole(); });
 
@@ -26,12 +29,13 @@ namespace SamuraiApp.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            var connectionString = ConfigurationManager.ConnectionStrings["WPFDatabase"].ToString(); //Microsoft.Extensions.Configuration.ConfigurationExtensions.
             // this is your connection string
             // here you database will be called SamuraiAppData
             // the first time the EFCore instantiates the samurai context at runtime, it will trigger "OnConfiguring" Method
             optionsBuilder.UseLoggerFactory(MyConsoleLoggerFactory)
                 .EnableSensitiveDataLogging(true)
-                .UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = SamuraiAppData; Trusted_Connection = True;");
+                .UseSqlServer(connectionString);
         }
 
         // "modelBuilder" object that EF Core pass to this function, you are telling that "SamuraiBattle" have key composed of
